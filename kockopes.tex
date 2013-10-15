@@ -1,0 +1,132 @@
+% Čeština
+\enableregime[utf]
+
+% Fonty
+\definetypeface [iwona] [ss] [sans] [iwona] [default] [encoding=ec]
+\definetypeface [antykwa] [rm] [serif] [antykwa-torunska] [default] [encoding=ec]
+\usetypescript[modern][ec]
+\setupbodyfont[ss,10pt]
+
+% Papír a číslování řádek
+
+\mainlanguage[cz]
+
+\setuppapersize[A4][A4]
+\setuppagenumbering[location={footer,middle}]
+
+% Struktura
+
+\definehead[kochapter][chapter]
+\setuphead[title][style=\antykwa, number=no]
+\setuphead[kochapter][page=no,placehead=empty,before=,after=,number=no]
+\setuphead[section][page=no,style=\tfb\iwona\grave,number=no]
+
+\def\rubrika #1{\kochapter{#1}}
+
+\def\prispevek #1#2{
+\section{#2}
+{\noindent \rm \sc #1} \noindent \endgraf \noindent
+}
+
+% Hlavička a patička
+
+\setupheadertexts[]
+\setupheadertexts[\setups{hlavicka}][][][\setups{hlavicka}]
+
+\startsetups[hlavicka]
+  \zanrO{\getmarking[kochapter]}
+\stopsetups
+
+
+% Odstavce
+\setupindenting[yes, small]
+\setupheads[indentnext=no]
+
+% Záložky a PDF
+\placebookmarks[kochapter,section][force=yes]
+\setupinteractionscreen[option=bookmark]
+\setupinteraction[state=start,
+  title={Neslyšný kočkopes},
+  author={Psanci}]
+  
+\def\kSetupInfo#1#2{
+\setupinteraction[state=start,
+  title={#2},
+  author={#1}]
+}
+\setupinteraction[openaction=FitWidth,focus=FitWidth]
+
+% TOC
+
+\setupcombinedlist[content][list={kochapter,section,subsection}]
+\setuplist[kochapter][interaction=text,color=green,textcommand=\WORD]
+\setuplist[section][interaction=text,color=green]
+
+% Barvy
+
+\setupcolors[state=start]
+\definecolor[indigo][r=.0, g=0.0, b=0.5]
+\definecolor[green][r=0, g=0.5, b=0]
+\definecolor[ruda][r=0.5, g=0, b=0]
+\definecolor[grave][r=0.5, g=0.5, b=0.5]
+
+% Ruzne
+
+\setupdelimitedtext[blockquote][style=\slx,before={\setupinterlinespace[line=2.4ex]}]
+
+
+% (interni makra)
+
+\def\zanrO #1{
+\framed[
+  background=color,
+  backgroundcolor=grave,
+  foreground=color,
+  foregroundcolor=white,
+  frame=off.
+  width=\hsize
+  ]{\antykwa \rightaligned{\WORD{#1}~~}}
+}
+
+% Makra
+
+\def\kCitat #1#2{
+{\it
+#1
+\blank[1*halfline]
+\rightaligned{--- #2}
+}}
+
+\def\kOdkaz #1#2{\goto{#1}[url(#2)] \footnote{viz #2}}
+
+\def\kStrankaIlustrace #1#2{
+\startalignment[center]
+\dontleavehmode
+\externalfigure[#1][height=0.95\textheight] \par
+\stopalignment
+\blank[1*halfline]
+{\it #2}
+\page
+}
+
+\def\kSep{ {} $\ast$ {} }
+
+\def\kStopPrispevku{\page}
+
+\def\trojtecka {
+{\bf \ruda \tt...}
+}
+
+% Ekonomicky mod
+\startmode[economy]
+
+\def\kStrankaIlustrace #1#2{}
+
+\def\kStopPrispevku{\hairline}
+
+\setupbodyfont[ss,8pt]
+
+\stopmode
+
+
+
